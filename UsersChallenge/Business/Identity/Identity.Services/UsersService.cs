@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Common.Exceptions;
 using Core.Common.Presentation;
+using FluentValidation.Results;
 using Identity.Domain.IRepositories;
 using Identity.Domain.IServices;
 using Identity.Domain.Models;
 using Identity.Domain.Queries;
+using Identity.Domain.Validators;
 using RandomUsers.Domain.Http;
 
 namespace Identity.Services
@@ -40,6 +44,11 @@ namespace Identity.Services
         public Result<User> GetAll(UsersQuery query)
         {
             if(query == null) query = new UsersQuery();
+            UsersQueryValidator validator = new UsersQueryValidator();
+            ValidationResult validation = validator.Validate(query);
+            if(!validation.IsValid)
+                throw new InvalidModelException(validation.Errors.Select(x => x.ErrorMessage));
+
             Result<User> result = new Result<User>(query);
             IQueryable<User> usersQuery = _usersRepository.GetAll();
             // Should keep the count of total of elements so we can know if there are more pages to consult

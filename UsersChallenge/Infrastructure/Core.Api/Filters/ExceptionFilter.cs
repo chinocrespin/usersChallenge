@@ -25,11 +25,7 @@ namespace Core.Api.Filters
             _logger = logger;
             _hostingEnvironment = hostingEnvironment;
         }
-
-        /// <summary>
-        /// Se encarga de capturar y manejar las excepciones no controladas de la aplicación.
-        /// </summary>
-        /// <param name="actionExecutedContext"></param>
+        
         public override void OnException(ExceptionContext actionExecutedContext)
         {
             var inner = actionExecutedContext.Exception.InnerException;
@@ -38,8 +34,7 @@ namespace Core.Api.Filters
 
             if (!actionExecutedContext.Exception.Data.Contains("App"))
             {
-                actionExecutedContext.Exception.Data.Add("App", "DemoDMA");
-                actionExecutedContext.Exception.Data.Add("API", _hostingEnvironment.ApplicationName);
+                actionExecutedContext.Exception.Data.Add("App", _hostingEnvironment.ApplicationName);
             }
             if (!actionExecutedContext.Exception.Data.Contains("Environment"))
             {
