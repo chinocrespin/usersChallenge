@@ -11,6 +11,6 @@ namespace Identity.Domain.Models
         public DateTime BirthDate { get; set; }
         public string Uuid { get; set; }
         public string UserName { get; set; }
-        public Location Location { get; set; }
+        public virtual Location Location { get; set; }
     }
 }

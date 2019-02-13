@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Infrastructure\Core.Api\Core.Api.csproj" />
     <ProjectReference Include="..\..\..\Infrastructure\Core.Common\Core.Common.csproj" />
   </ItemGroup>
 

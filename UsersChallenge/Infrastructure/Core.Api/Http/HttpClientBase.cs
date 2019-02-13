@@ -22,45 +22,45 @@ namespace Core.Api.Http
 
         public HttpClient Client { get; }
 
-        public async Task<TRespuesta> PostAsync<TEntrada, TRespuesta>(string accion, TEntrada tEntrada, AuthenticationHeader authHeader = null)
+        public async Task<TOutput> PostAsync<TInput, TOutput>(string action, TInput tInput, AuthenticationHeader authHeader = null)
         {
-            var rawjson = JsonConvert.SerializeObject(tEntrada);
+            var rawjson = JsonConvert.SerializeObject(tInput);
             Client.DefaultRequestHeaders.Authorization = authHeader != null ? new AuthenticationHeaderValue(authHeader.Scheme, authHeader.Value) : null;
 
-            var httpResponse = await Client.PostAsync(GetActionUri(accion), new StringContent(rawjson, Encoding.UTF8, "application/json"));
+            var httpResponse = await Client.PostAsync(GetActionUri(action), new StringContent(rawjson, Encoding.UTF8, "application/json"));
             var result = httpResponse.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<TRespuesta>(result?.Result);
+            return JsonConvert.DeserializeObject<TOutput>(result?.Result);
         }
 
-        public async Task<TRespuesta> GetAsync<TRespuesta>(string accion, IDictionary<string, string> parameters = null, AuthenticationHeader authHeader = null)
+        public async Task<TOutput> GetAsync<TOutput>(string action, IDictionary<string, string> parameters = null, AuthenticationHeader authHeader = null)
         {
             Client.DefaultRequestHeaders.Authorization = authHeader != null ? new AuthenticationHeaderValue(authHeader.Scheme, authHeader.Value) : null;
 
-            var httpResponse = await Client.GetAsync(GetActionUri(accion, parameters));
+            var httpResponse = await Client.GetAsync(GetActionUri(action, parameters));
             var result = httpResponse.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<TRespuesta>(result?.Result);
+            return JsonConvert.DeserializeObject<TOutput>(result?.Result);
         }
 
-        public async Task<string> GetPlainAsync(string accion, IDictionary<string, string> parameters = null, AuthenticationHeader authHeader = null)
+        public async Task<string> GetPlainAsync(string action, IDictionary<string, string> parameters = null, AuthenticationHeader authHeader = null)
         {
             Client.DefaultRequestHeaders.Authorization = authHeader != null ? new AuthenticationHeaderValue(authHeader.Scheme, authHeader.Value) : null;
 
-            var httpResponse = await Client.GetAsync(GetActionUri(accion, parameters));
+            var httpResponse = await Client.GetAsync(GetActionUri(action, parameters));
             var result = httpResponse.Content.ReadAsStringAsync();
 
             return result?.Result;
         }
 
-        public async Task<TRespuesta> DeleteAsync<TRespuesta>(string accion, IDictionary<string, string> parameters = null, AuthenticationHeader authHeader = null)
+        public async Task<TOutput> DeleteAsync<TOutput>(string action, IDictionary<string, string> parameters = null, AuthenticationHeader authHeader = null)
         {
             Client.DefaultRequestHeaders.Authorization = authHeader != null ? new AuthenticationHeaderValue(authHeader.Scheme, authHeader.Value) : null;
 
-            var httpResponse = await Client.DeleteAsync(GetActionUri(accion, parameters));
+            var httpResponse = await Client.DeleteAsync(GetActionUri(action, parameters));
             var result = httpResponse.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<TRespuesta>(result?.Result);
+            return JsonConvert.DeserializeObject<TOutput>(result?.Result);
         }
 
         public void CancelPendingRequests()

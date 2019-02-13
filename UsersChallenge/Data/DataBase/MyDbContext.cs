@@ -9,22 +9,30 @@ namespace DataBase
         {
         }
 
+        private static string Schema => "MyDb";
+
         public DbSet<User> Users { get; set; }
         public DbSet<Location> Locations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Map table names
-            modelBuilder.Entity<User>().ToTable("Users", "test");
+            modelBuilder.Entity<Location>().ToTable("Locations", Schema);
+            modelBuilder.Entity<Location>(entity =>
+            {
+                //entity.HasKey(e => e.IdValue);
+                //entity.HasIndex(e => e.IdValue).IsUnique();
+            });
 
+            modelBuilder.Entity<User>().ToTable("Users", Schema);
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => e.IdValue);
-                //entity.HasIndex(e => e.Title).IsUnique();
-                //entity.Property(e => e.DateTimeAdd).HasDefaultValueSql("CURRENT_TIMESTAMP");
+                entity.HasIndex(e => e.IdValue).IsUnique();
+                entity.HasOne(e => e.Location)
+                    .WithMany(p => p.Users);
             });
-
-
+            
             base.OnModelCreating(modelBuilder);
         }
     }
