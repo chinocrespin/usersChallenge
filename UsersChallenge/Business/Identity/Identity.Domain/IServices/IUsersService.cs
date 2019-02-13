@@ -1,9 +1,16 @@
-﻿using Core.Common.Data;
+﻿using System.Collections.Generic;
+using Core.Common.Data;
+using Core.Common.Presentation;
+using Identity.Domain.Models;
+using Identity.Domain.Queries;
 
 namespace Identity.Domain.IServices
 {
     public interface IUsersService : IService
     {
-
+        User GetById(string id);
+        bool Update(User user);
+        bool Delete(string id);
+        Result<User> GetAll(UsersQuery query);
     }
 }

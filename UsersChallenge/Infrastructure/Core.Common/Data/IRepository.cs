@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Core.Common.Data
 {
     public interface IRepository<T> where T : Entity
     {
-        bool Add(T entity);
+        bool Create(T entity);
         bool Update(T entity);
         bool Delete(T entity);
         T GetById(string idValue);
-        ICollection<T> GetAll();
+        IQueryable<T> GetAll();
     }
 }

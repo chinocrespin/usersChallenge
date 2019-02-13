@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Linq;
 using Core.EF;
 using Identity.Domain.IRepositories;
 using Identity.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repositories
 {
@@ -12,29 +12,9 @@ namespace Repositories
         {
         }
 
-        public bool Add(User entity)
+        public override IQueryable<User> GetAll()
         {
-            throw new NotImplementedException();
-        }
-
-        public bool Update(User entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Delete(User entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public User GetById(string idValue)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ICollection<User> GetAll()
-        {
-            throw new NotImplementedException();
+            return DbSet.Include(x => x.Location);
         }
     }
 }

@@ -1,35 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Newtonsoft.Json;
 
 namespace Core.Common.Presentation
 {
-    public class Result
+    public sealed class Result<T>
     {
-        public int Status { get; set; }
-
-        [JsonProperty(PropertyName = "result", NullValueHandling = NullValueHandling.Ignore)]
-        public dynamic Data { get; private set; }
-
-        [JsonProperty(PropertyName = "errors", NullValueHandling = NullValueHandling.Ignore)]
-        public IEnumerable<ErrorResult> Errors { get; private set; }
-
-        public Result(int statusCode, dynamic data)
+        public Result()
         {
-            Status = statusCode;
-            Data = data;
+            Elements = new List<T>();
         }
 
-        public Result(int statusCode, IEnumerable<ErrorResult> errors)
+        public Result(Query query)
         {
-            Status = statusCode;
-            Errors = errors;
+            Elements = new List<T>();
+            PageNumber = query.PageNumber;
+            PageSize = query.PageSize;
         }
 
-        public Result(IEnumerable<ErrorResult> errors)
-        {
-            Errors = errors;
-        }
+        public IEnumerable<T> Elements { get; set; }
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+        public int ElementsCount { get; set; }
+        public bool TieneMasResultados => (PageSize * PageNumber) < ElementsCount;
     }
 }

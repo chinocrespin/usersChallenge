@@ -74,7 +74,7 @@ namespace Core.Api.Filters
                 ? (int)HttpStatusCode.BadRequest
                 : (int)HttpStatusCode.InternalServerError;
 
-            var respuesta = new Result(statusCode, allErrors);
+            var respuesta = new HttpResult(statusCode, allErrors);
             actionExecutedContext.HttpContext.Response.StatusCode = statusCode;
 
             actionExecutedContext.Result = new JsonResult(respuesta);
