@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Api.Http;
-using Identity.Domain.Models;
+using RandomUsers.Domain.Http;
+using RandomUsers.Domain.Models;
+using RandomUsers.Domain.Results;
 
-namespace Identity.Domain.Http
+namespace RandomUsers.Services
 {
     public class RandomUsersHttpClient : HttpClientBase, IRandomUsersHttpClient
     {
@@ -13,12 +13,13 @@ namespace Identity.Domain.Http
         {
         }
 
-        public async Task<IEnumerable<User>> GetRandomUsers()
+        public async Task<IEnumerable<RandomUser>> GetRandomUsers()
         {
             IDictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("results", "500");
 
-            return await GetAsync<IEnumerable<User>>("/api/", parameters);
+            var randomUsers = await GetAsync<RandomUsersQueryResult>("/api/", parameters);
+            return randomUsers.Results;
         }
     }
 }

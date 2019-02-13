@@ -20,8 +20,8 @@ namespace DataBase
             modelBuilder.Entity<Location>().ToTable("Locations", Schema);
             modelBuilder.Entity<Location>(entity =>
             {
-                //entity.HasKey(e => e.IdValue);
-                //entity.HasIndex(e => e.IdValue).IsUnique();
+                entity.HasKey(e => e.IdValue);
+                entity.HasIndex(e => e.IdValue).IsUnique();
             });
 
             modelBuilder.Entity<User>().ToTable("Users", Schema);
@@ -29,8 +29,8 @@ namespace DataBase
             {
                 entity.HasKey(e => e.IdValue);
                 entity.HasIndex(e => e.IdValue).IsUnique();
-                entity.HasOne(e => e.Location)
-                    .WithMany(p => p.Users);
+                entity.HasOne(e => e.Location);
+                //.WithMany(p => p.Users);
             });
             
             base.OnModelCreating(modelBuilder);

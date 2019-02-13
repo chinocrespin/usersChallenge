@@ -77,6 +77,7 @@ namespace Core.Api.Extensions
         /// <param name="t">Interface wich is implemented by others (we want to bind T<W> "sons")</param>
         public static void BindAllFromGeneric(this IServiceCollection services, AppDomain appDomain, Type t, ServiceLifetime lifetime = ServiceLifetime.Transient)
         {
+            LoadUnusedAssemblies(appDomain);
             Assembly[] assemblies = appDomain.GetAssemblies();
             var classes = assemblies.Where(x => x.FullName.Contains(_classesPatterns));
             foreach (var assembly in classes)

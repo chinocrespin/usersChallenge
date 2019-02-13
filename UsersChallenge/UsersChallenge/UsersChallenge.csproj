@@ -15,6 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Business\Identity\Identity.Services\Identity.Services.csproj" />
+    <ProjectReference Include="..\Business\RandomUsers\RandomUsers.Services\RandomUsers.Services.csproj" />
+    <ProjectReference Include="..\Data\Repositories\Repositories.csproj" />
     <ProjectReference Include="..\Infrastructure\Core.Api\Core.Api.csproj" />
     <ProjectReference Include="..\Infrastructure\Core.EF\Core.EF.csproj" />
   </ItemGroup>

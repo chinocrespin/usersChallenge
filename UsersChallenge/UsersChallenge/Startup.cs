@@ -3,12 +3,19 @@ using Core.Api.Extensions;
 using Core.Api.Filters;
 using Core.Common.Data;
 using Core.EF.Config;
-using Identity.Domain.Http;
+using Core.Logger.Config;
+using DataBase;
+using Identity.Domain.IRepositories;
+using Identity.Domain.IServices;
+using Identity.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RandomUsers.Domain.Http;
+using RandomUsers.Services;
+using Repositories;
 
 namespace UsersChallenge
 {
@@ -27,6 +34,9 @@ namespace UsersChallenge
         {
             //services.ConfigureCors();
 
+            // Logger
+            services.AddLogger(Configuration);
+
             // Exception Filter injection
             services.AddTransient<IExceptionFilter, ExceptionFilter>();
             services.AddMvcCore(options =>
@@ -37,8 +47,10 @@ namespace UsersChallenge
                 .AddJsonFormatters();
 
             // Injection of all business interfaces
-            services.BindAll<IService>(AppDomain.CurrentDomain);
-            services.BindAllFromGeneric(AppDomain.CurrentDomain, typeof(IRepository<>));
+            //services.BindAll<IService>(AppDomain.CurrentDomain);
+            //services.BindAllFromGeneric(AppDomain.CurrentDomain, typeof(IRepository<>));
+            services.AddTransient<IUsersService, UsersService>();
+            services.AddTransient<IUsersRepository, UsersRepository>();
 
             // Injection of Random Users HttpClient
             services.AddSingleton<IRandomUsersHttpClient, RandomUsersHttpClient>(_ =>
@@ -46,6 +58,7 @@ namespace UsersChallenge
 
             // Config and injection of EF
             services.ConfigureEntityFramework(Configuration.GetConnectionString("Sqlite"));
+            (new SeedData()).Initialize(services.BuildServiceProvider());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

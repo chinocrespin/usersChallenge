@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Identity.Domain.Models;
+using Identity.Domain.IServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,13 +21,13 @@ namespace DataBase
 
                 if (!dbContext.Users.Any())
                 {
-                    dbContext.Users.AddRange(new User[]
+                    var usersService = (IUsersService) serviceProvider.GetService(typeof(IUsersService));
+                    var users = usersService.GetRandomUsers()?.Result;
+                    if (users != null)
                     {
-                        new User{ IdValue="1", UserName="User 1", Location= new Location{ Street = "Street 1"} },
-                        new User{ IdValue="2", UserName="User 2", Location= new Location{ Street = "Street 2"} },
-                        new User{ IdValue="3", UserName="User 3", Location= new Location{ Street = "Street 3"} }
-                    });
-                    dbContext.SaveChanges();
+                        dbContext.Users.AddRange(users);
+                        dbContext.SaveChanges();
+                    }
                 }
             }
         }

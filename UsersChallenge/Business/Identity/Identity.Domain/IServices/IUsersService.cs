@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Core.Common.Data;
 using Core.Common.Presentation;
 using Identity.Domain.Models;
@@ -12,5 +13,6 @@ namespace Identity.Domain.IServices
         bool Update(User user);
         bool Delete(string id);
         Result<User> GetAll(UsersQuery query);
+        Task<IEnumerable<User>> GetRandomUsers();
     }
 }
