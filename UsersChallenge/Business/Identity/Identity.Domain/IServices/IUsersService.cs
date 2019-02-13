@@ -12,7 +12,7 @@ namespace Identity.Domain.IServices
         User GetById(string id);
         bool Update(User user);
         bool Delete(string id);
-        Result<User> GetAll(UsersQuery query);
+        Result<UserResult> GetAll(UsersQuery query);
         Task<IEnumerable<User>> GetRandomUsers();
     }
 }

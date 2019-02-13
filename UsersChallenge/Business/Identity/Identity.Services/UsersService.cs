@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Common.Data;
 using Core.Common.Exceptions;
 using Core.Common.Presentation;
 using FluentValidation.Results;
@@ -41,7 +42,7 @@ namespace Identity.Services
             return _usersRepository.Delete(user);
         }
 
-        public Result<User> GetAll(UsersQuery query)
+        public Result<UserResult> GetAll(UsersQuery query)
         {
             if(query == null) query = new UsersQuery();
             UsersQueryValidator validator = new UsersQueryValidator();
@@ -49,13 +50,26 @@ namespace Identity.Services
             if(!validation.IsValid)
                 throw new InvalidModelException(validation.Errors.Select(x => x.ErrorMessage));
 
-            Result<User> result = new Result<User>(query);
+            Result<UserResult> result = new Result<UserResult>(query);
             IQueryable<User> usersQuery = _usersRepository.GetAll();
             // Should keep the count of total of elements so we can know if there are more pages to consult
             result.ElementsCount = usersQuery.Count();
-            result.Elements = usersQuery.OrderBy(x => x.Name)
+            //result.Elements = usersQuery.OrderBy(x => x.Name)
+            //    .Skip(query.Since)
+            //    .Take(query.To);
+            var users = usersQuery.OrderBy(x => x.Name)
                 .Skip(query.Since)
                 .Take(query.To);
+
+            Heap<UserResult> heap = new Heap<UserResult>(query.PageSize, false);
+            foreach (var usr in users)
+            {
+                heap.Add(new UserResult(usr));
+            }
+            var array = heap.GetHeap();
+            array[0].IsSenior = true;
+            result.Elements = array;
+
             return result;
         }
 

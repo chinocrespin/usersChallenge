@@ -18,7 +18,7 @@ namespace UsersChallenge.Controllers
         }
 
         [HttpGet]
-        public Result<User> Get([FromQuery] UsersQuery query)
+        public Result<UserResult> Get([FromQuery] UsersQuery query)
         {
             return _usersService.GetAll(query);
         }
