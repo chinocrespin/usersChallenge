@@ -12,6 +12,12 @@ namespace Repositories
         {
         }
 
+        public override User GetById(string id)
+        {
+            return DbSet.Include(x => x.Location)
+                .FirstOrDefault(x => x.IdValue == id);
+        }
+
         public override IQueryable<User> GetAll()
         {
             return DbSet.Include(x => x.Location);

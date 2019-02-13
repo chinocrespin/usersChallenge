@@ -14,7 +14,6 @@ namespace Core.EF
         }
         
         protected DbSet<T> DbSet => _context.GetDbContext().Set<T>();
-        protected DbContext Context => _context.GetDbContext();
 
         public virtual bool Create(T entity)
         {

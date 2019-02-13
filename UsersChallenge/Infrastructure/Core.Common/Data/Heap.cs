@@ -20,10 +20,9 @@ namespace Core.Common.Data
         }
 
         /// <summary>
-        /// Inserta un nuevo objeto en el heap. Se admiten repeticiones. La insercion se realiza
-        /// con tiempo de ejecucion de O(log(n)), siendo n la cantidad de elementos del heap.
+        /// Inserts new object to the heap
         /// </summary>
-        /// <param name="data">el objeto a insertar.</param>
+        /// <param name="data">object to insert.</param>
         public void Add(T data)
         {
             if (!IsHomogeneus(data)) { return; }
@@ -49,9 +48,7 @@ namespace Core.Common.Data
         }
 
         /// <summary>
-        /// Remueve todos los elementos del heap y lo deja vacio. La capacidad vuelve
-        /// al valor con el que inicialmente se creo el heap. El tipo de heap (ascendente
-        /// o descendente) se mantiene igual al que se tenia antes de invocar a clear.
+        /// Removes all elements of the heap
         /// </summary>
         public void Clear()
         {
@@ -60,10 +57,7 @@ namespace Core.Common.Data
         }
 
         /// <summary>
-        /// Retorna el elemento de la cima del Heap, sin removerlo. Si el Heap
-        /// es de tipo ascendente, el objeto retornado sera el menor del heap,
-        /// y si el heap es descendente, el objeto retornado sera el mayor. Si
-        /// el heap esta vacio, retorna null.
+        /// Returns the element that is in the highest position of the heap without removing it
         /// </summary>
         /// <returns></returns>
         public T Get()
@@ -73,7 +67,7 @@ namespace Core.Common.Data
         }
 
         /// <summary>
-        /// Permite determinar si el Heap esta vacio. Retorna true si el Heap esta vacio.
+        /// Checks if the heap is empty
         /// </summary>
         /// <returns></returns>
         public bool IsEmpty()
@@ -82,15 +76,9 @@ namespace Core.Common.Data
         }
 
         /// <summary>
-        /// Obtiene y retorna el elemento de la cima del heap. Si el heap es de 
-        /// tipo ascendente, ese elemento sera el menor del heap. En caso contrario 
-        /// sera el mayor. Rearma el heap con los elementos restantes, de forma que
-        /// luego de terminada la operacion, la cima vuelve a contener al menor (o al
-        /// mayor) de los elementos que quedaban, y la cantidad de elementos se reduce
-        /// en uno. Si el heap esta vacio, retorna null. Tiempo de ejecucion esperado
-        /// (en el peor caso): O(log(n)).
+        /// Gets and returns the element that is in the highest position of the heap and removes it
         /// </summary>
-        /// <returns>el elemento menor (o el mayor) del heap.</returns>
+        /// <returns></returns>
         public T Remove()
         {
             if (IsEmpty()) { return default(T); }
@@ -136,18 +124,18 @@ namespace Core.Common.Data
         }
 
         /// <summary>
-        /// Retorna la cantidad de elementos contenidos en el Heap.
+        /// Count of elements of the heap
         /// </summary>
-        /// <returns>el tamaño del Heap.</returns>
+        /// <returns>Heap size</returns>
         public int Size()
         {
             return Count;
         }
 
         /// <summary>
-        /// Retorna el tipo de Heap: true si es ascendente, false si es descendente.
+        /// Returns if the heap is ascendent
         /// </summary>
-        /// <returns>true: el heap es ascendente - false: es descendente.</returns>
+        /// <returns></returns>
         public bool IsAscendent()
         {
             return Ascendent;
@@ -168,12 +156,11 @@ namespace Core.Common.Data
         }
 
         /// <summary>
-        /// Chequea dos elementos hermanos y retorna true si el optimo es el izquierdo, o false si es
-        /// el derecho. Entendemos por "optimo" al menor de los dos si el heap es ascendente, o al mayor
-        /// si el heap es descendente.
+        /// Checks two siblings elements and returns true if the optimal is the left one, or false if
+        /// the optimal is the right one
         /// </summary>
-        /// <param name="sl"></param>
-        /// <param name="sr"></param>
+        /// <param name="sl">Left son</param>
+        /// <param name="sr">Right son</param>
         /// <returns></returns>
         private bool OptimalLeft(int sl, int sr)
         {
@@ -190,14 +177,10 @@ namespace Core.Common.Data
         }
 
         /// <summary>
-        /// Retorna true el elemento en la posicion s del heap deberia intercambiarse con el
-        /// elemento en la posicion f del heap. Se supone que heap[s] es hijo (izquierdo o 
-        /// derecho) de heap[f], aunque el metodo no valida ese supuesto. La comprobacion se
-        /// realiza de acuerdo al tipo de heap: si es un heap ascendente, se retornara true si
-        /// heap[s] menor a heap[f], pero si el heap es descendente se retornara true si heap[s] mayor a heap[f].
+        /// Return true if the son in s position should be exchanged with the father in f position
         /// </summary>
-        /// <param name="s"></param>
-        /// <param name="f"></param>
+        /// <param name="s">Position of son element</param>
+        /// <param name="f">Position of father element</param>
         /// <returns></returns>
         private bool ValidChange(int s, int f)
         {

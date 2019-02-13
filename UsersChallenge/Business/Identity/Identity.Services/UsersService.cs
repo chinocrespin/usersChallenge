@@ -45,6 +45,7 @@ namespace Identity.Services
         public Result<UserResult> GetAll(UsersQuery query)
         {
             if(query == null) query = new UsersQuery();
+            // Validate query
             UsersQueryValidator validator = new UsersQueryValidator();
             ValidationResult validation = validator.Validate(query);
             if(!validation.IsValid)
@@ -52,25 +53,27 @@ namespace Identity.Services
 
             Result<UserResult> result = new Result<UserResult>(query);
             IQueryable<User> usersQuery = _usersRepository.GetAll();
+
             // Should keep the count of total of elements so we can know if there are more pages to consult
             result.ElementsCount = usersQuery.Count();
-            //result.Elements = usersQuery.OrderBy(x => x.Name)
-            //    .Skip(query.Since)
-            //    .Take(query.To);
             var users = usersQuery.OrderBy(x => x.Name)
                 .Skip(query.Since)
                 .Take(query.To);
+            
+            result.Elements = AsignSeniorUser(users, query.PageSize).OrderBy(x => x.Name);
+            return result;
+        }
 
-            Heap<UserResult> heap = new Heap<UserResult>(query.PageSize, false);
+        public IEnumerable<UserResult> AsignSeniorUser(IEnumerable<User> users, int count = 100)
+        {
+            Heap<UserResult> heap = new Heap<UserResult>(count, false);
             foreach (var usr in users)
             {
                 heap.Add(new UserResult(usr));
             }
             var array = heap.GetHeap();
             array[0].IsSenior = true;
-            result.Elements = array;
-
-            return result;
+            return array;
         }
 
         public async Task<IEnumerable<User>> GetRandomUsers()

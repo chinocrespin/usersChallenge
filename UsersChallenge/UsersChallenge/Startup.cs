@@ -46,9 +46,7 @@ namespace UsersChallenge
                 .AddAuthorization()
                 .AddJsonFormatters();
 
-            // Injection of all business interfaces
-            //services.BindAll<IService>(AppDomain.CurrentDomain);
-            //services.BindAllFromGeneric(AppDomain.CurrentDomain, typeof(IRepository<>));
+            // Injection of users interfaces
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IUsersRepository, UsersRepository>();
 
