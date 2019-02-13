@@ -8,6 +8,32 @@
 (server should be localhost to test it locally)
 4. To test the endpoints I suggest to use Postman (I was going to add Swagger but did not developed it time to do that)
 
+**Endpoints**
+- GetUsers (Paged): `GET /api/users?pageSize=XX&pageNumber=YY` where XX is the count of element per page we want to get and YY the page number we want to consult.
+- GetUserByIdValue: `GET /api/users/XXXX` where XXXX is the idValue of the user we are requesting
+- Delete user: `DELETE /api/users/XXXX` where XXXX is the idValue of the user we want to delete from the database
+- Update user:
+~~~~
+PUT /api/users
+Content-Type: application/json
+{
+    "gender": "female",
+    "name": "miss noemie blanchard",
+    "email": "noemie.blanchard@example.com",
+    "birthDate": "1987-10-11T02:46:12",
+    "uuid": "57f41dd3-38ce-475b-9194-89dfdb7cac57",
+    "userName": "smallwolf654",
+    "location": {
+        "state": "bas-rhin",
+        "street": "8795 rue dugas-montbel",
+        "city": "strasbourg",
+        "postCode": "14298",
+        "idValue": "662b56da-ab36-44ca-9fef-8c0d8547d397"
+    },
+    "idValue": "6459ef44-9bae-4233-a193-a12e18e297ee"
+}
+~~~~
+
 **Implementation**
 This API Rest was implemented following Onion Architecture and resulting in 3 big layers that are Infraestructure layer, Business layer and Data layer.
 - **Business Layer:** in this layer there are all assemblies that refers specifically to the challenge, with it's domain and services. In this case these are the Users Domain and services and the RandomUsers http communication domain and services.
